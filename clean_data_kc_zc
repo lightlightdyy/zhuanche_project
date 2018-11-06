@@ -1,0 +1,100 @@
+import pandas as pd
+import numpy as np
+import datetime
+from pandas import DataFrame
+from numba import jit
+
+@jit
+def clean_data_kc_zc(path1,path2,file_name1,file_name2):
+    data = pd.read_csv(path1, header=None,sep='\t')#new: del column names
+    data=data.drop(data.head(1).index)
+    if data.shape[1] == 66:
+        data = data.iloc[:,1:]
+    data.replace('\\N', -1, inplace=True)
+    data.fillna(-1, inplace=True)
+    fe_name_zc = pd.read_csv('./feature_name.txt', dtype=str)
+    data.columns = fe_name_zc.columns
+    data.insert(0, 'passenger_id', data.pop('passenger_id'))
+    data.sort_values(by=['passenger_id', 'year', 'month', 'day'], inplace=True)
+    data = data.drop(['year', 'month', 'day'], axis=1)
+    print('Data Read')
+    
+    kuaiche = pd.read_csv(path2, header=None,sep='\t')#new: del column names
+    kuaiche=kuaiche.drop(kuaiche.head(1).index)
+    if kuaiche.shape[1] == 125:
+        kuaiche = kuaiche.iloc[:,1:]
+    kuaiche.replace('\\N', -1, inplace=True)
+    kuaiche.fillna(-1, inplace=True)
+    fe_name_kc = pd.read_csv('./fe_name_kc.txt', dtype=str)
+    kuaiche.columns = fe_name_kc.columns
+    kuaiche.insert(0, 'passenger_id', kuaiche.pop('passenger_id'))
+    kuaiche.sort_values(by=['passenger_id', 'year', 'month', 'day'], inplace=True)
+    kuaiche = kuaiche.drop(['year', 'month', 'day'], axis=1)
+    print('kuaiche Read')
+    DAYSINC = 30
+    ## 专车    
+    tmp0 = data
+    selected_name_zc = tmp0.columns[1:]
+    np.save("selected_name_zc.npy",selected_name_zc)
+    data = np.array(tmp0,dtype=str)  #new:dtype=str
+    pas_id0 = np.unique(data[:, 0])
+    clean_data_zc = np.zeros((len(pas_id0), (data.shape[1]-1)*DAYSINC))
+    
+    pid=[]
+    print('begin data loop')
+    for i in range(len(pas_id0)):
+        tmp0 = data[np.where(data[:, 0] == pas_id0[i])[0],1:]
+        index0=np.where(tmp0[:,5]>='0')
+        #print(i)
+        pid.append(int(pas_id0[i]))
+        inde=list(index0[0])
+        if tmp0.shape[0]*tmp0.shape[1]==1830 and len(inde)>0:
+            ind=inde[0]  #首单时间对应行号+1
+            if tmp0.shape[0] < DAYSINC:
+                continue
+            clean_data_zc[i,] = tmp0[ind+1:DAYSINC+ind+1,].reshape(DAYSINC*(data.shape[1]-1))
+    clean_data_zc=np.insert(clean_data_zc, 0, values=pid, axis=1)
+    clean_data_zc=clean_data_zc[np.where(np.sum(clean_data_zc[:,1:clean_data_zc.shape[1]],axis=1)>0)]
+    np.savetxt('%s' % file_name1, clean_data_zc) 
+    
+    
+    ##快车
+    tmp = kuaiche
+    selected_name_kc = tmp.columns[1:]
+    np.save("selected_name_kc.npy",selected_name_kc)
+    #%timeit kuaiche = np.array(tmp,dtype=str)  #Python Notebook 中获得运行时间的一种方式是使用神奇的 %timeit
+    kuaiche = np.array(tmp,dtype=str) 
+    pas_id = np.unique(kuaiche[:, 0])
+    clean_data_kc = np.zeros((len(pas_id), (kuaiche.shape[1]-1)*DAYSINC))
+
+    print('begin kuaiche loop')
+    
+    c=[]
+    for i in range(len(pas_id)):    
+        tmp = kuaiche[np.where(kuaiche[:, 0] == pas_id[i])[0],1:]
+        tmp0 = data[np.where(data[:, 0] == pas_id0[i])[0],1:]
+        index=np.where(tmp0[:,5]>='0')
+        c.append(int(pas_id[i]))
+        aaa=list(index[0])
+        if tmp.shape[0]*tmp.shape[1]==7320 and len(aaa)>0:              
+            ind=aaa[0]  #首单时间对应行号(日期号)
+            if tmp.shape[0] < DAYSINC:
+                continue
+            clean_data_kc[i,] = tmp[ind:DAYSINC+ind,].reshape(DAYSINC*(kuaiche.shape[1]-1))
+    clean_data_kc=np.insert(clean_data_kc, 0, values=c, axis=1)
+    clean_data_kc=clean_data_kc[np.where(np.sum(clean_data_kc[:,1:clean_data_kc.shape[1]],axis=1)>0)]
+
+    np.savetxt('%s' % file_name2, clean_data_kc)
+
+    return
+
+
+path1 = '/nfs/project/dengyuying/zhuanche/neg_data_zc_1102.txt'
+path2 = '/nfs/project/dengyuying/zhuanche/neg_data_kc_1102.txt'
+file_name1 = 'clean_neg_data_zc_1102.txt'
+file_name2 = 'clean_neg_data_kc_1102.txt'
+clean_data_kc_zc(path1,path2,file_name1, file_name2)
+
+
+
+
