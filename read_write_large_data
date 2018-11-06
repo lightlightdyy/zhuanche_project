@@ -1,0 +1,32 @@
+
+
+# load temp file to memory (single thread)
+order_file = open("{}/temp/order.dat".format(outpath), "r")
+lines = order_file.readlines()
+order_file.close()
+
+# create partition
+num_lines = len(lines)
+for i in range(num_lines):
+    row = lines[i].strip().split('\t')
+    city_id = int(row[4])
+    orders[city_id].append(i)
+    if i % 100000 == 0:
+        logging.info("has read orders_data {}/{}".format(i, num_lines))
+
+# write data to files
+path_prefix = "{}/all_orders/".format(outpath) + date
+for i in range(max_city_num):
+    num_orders = len(orders[i])
+    if num_orders > 0:
+        # named the file by date and city_id
+        file_name = "order_{}_{}.dat".format(date, i)
+        dir_path = path_prefix + "/" + str(i)
+        file_path = dir_path + "/" + file_name
+        if not os.path.exists(dir_path):
+            os.makedirs(dir_path)
+        logging.info("start to write file" + file_path)
+        data_file = open(file_path, "w")
+        for j in range(num_orders):
+            data_file.write(lines[orders[i][j]])
+        data_file.close()
