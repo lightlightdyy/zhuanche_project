@@ -50,3 +50,5 @@ Recall | 0.41 | 0.77 | 0.76 | 0.77 | 0.79
 (c2)                                                 lstm：Accuracy: 80.30%<br>
 
 
+XGBoost提取特征重要性排序：
+
