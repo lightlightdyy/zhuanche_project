@@ -61,12 +61,6 @@ XGBoost提取特征重要性排序：
 ### 4. 用快车数据进行预测(不区分城市)，模型：LSTM+XGBoost
 
 取LSTM最后一层的 hidden state，作为XGBoost模型的输入，用一个月快车数据进行预测(30787负样本)，结果如下：<br>
-指标\模型      | LSTM + XGBoost  | XGBoost   
- -------- | :-----------:  | :-----------:  
-Accuracy | 79.84% | 86.73%    
-AUC | 0.81 | 0.89 
-Precision | 0.92 | 0.87 
-Recall | 0.51 | 0.77 
 
 指标\模型      | LSTM + XGBoost  | XGBoost 
  -------- | :-----------:  | :-----------: 
@@ -78,3 +72,4 @@ Recall | 0.51 | 0.77
 LSTM + XGBoost模型与直接用XGBoost预测相比，整体指标下降。<br>
 
 基于LSTM + XGBoost模型的混淆矩阵：
+![image](http://wiki.intra.xiaojukeji.com/download/attachments/174009996/矩阵.png?version=1&modificationDate=1542354743000&api=v2）
