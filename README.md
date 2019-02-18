@@ -52,9 +52,11 @@ Recall | 0.41 | 0.77 | 0.76 | 0.77 | 0.79
 
 XGBoost提取特征重要性排序：
 >>* 基于一个月快车 + 一个月专车特征：
+![](http://wiki.intra.xiaojukeji.com/download/attachments/174009996/快专.png?version=1&modificationDate=1542354796000&api=v2)
 
 
 >>* 基于一个月快车特征：
+![](http://wiki.intra.xiaojukeji.com/download/attachments/174009996/快.png?version=1&modificationDate=1542354801000&api=v2)
 
 
 
