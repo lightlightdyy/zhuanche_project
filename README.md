@@ -68,6 +68,13 @@ AUC | 0.81 | 0.89
 Precision | 0.92 | 0.87 
 Recall | 0.51 | 0.77 
 
+指标\模型      | LSTM + XGBoost  | XGBoost 
+ -------- | :-----------:  | :-----------: 
+Accuracy | 79.84% | 86.73%  
+AUC | 0.81 | 0.89 
+Precision | 0.92 | 0.87 
+Recall | 0.51 | 0.77 
+
 LSTM + XGBoost模型与直接用XGBoost预测相比，整体指标下降。<br>
 
 基于LSTM + XGBoost模型的混淆矩阵：
