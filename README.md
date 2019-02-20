@@ -73,5 +73,5 @@ Recall | 0.51 | 0.77
 
 LSTM + XGBoost模型与直接用XGBoost预测相比，整体指标下降。<br>
 
-基于LSTM + XGBoost模型的混淆矩阵：
+基于LSTM + XGBoost模型的混淆矩阵： <br>
 <img src="https://github.com/lightlightdyy/zhuanche_project/blob/master/images/mat.png" width="375">
