@@ -52,11 +52,11 @@ Recall | 0.41 | 0.77 | 0.76 | 0.77 | 0.79
 
 XGBoost提取特征重要性排序：
 >>* 基于一个月快车 + 一个月专车特征：
-![](http://wiki.intra.xiaojukeji.com/download/attachments/174009996/快专.png?version=1&modificationDate=1542354796000&api=v2)
+![](https://github.com/lightlightdyy/zhuanche_project/blob/master/images/kz.png)
 
 
 >>* 基于一个月快车特征：
-![](http://wiki.intra.xiaojukeji.com/download/attachments/174009996/快.png?version=1&modificationDate=1542354801000&api=v2)
+![](https://github.com/lightlightdyy/zhuanche_project/blob/master/images/kc.png)
 
 
 
@@ -74,4 +74,4 @@ Recall | 0.51 | 0.77
 LSTM + XGBoost模型与直接用XGBoost预测相比，整体指标下降。<br>
 
 基于LSTM + XGBoost模型的混淆矩阵：
-![](http://wiki.intra.xiaojukeji.com/download/attachments/174009996/矩阵.png?version=1&modificationDate=1542354743000&api=v2)
+![](https://github.com/lightlightdyy/zhuanche_project/blob/master/images/mat.png)
